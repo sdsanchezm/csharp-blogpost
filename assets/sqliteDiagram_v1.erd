@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram version="1" name="blogPost1">
+	<entities>
+		<data-source id="sqlite_jdbc-18aaa2964c0-5381a00cb26246c5">
+			<entity id="1" name="__EFMigrationsHistory" fq-name="&quot;__EFMigrationsHistory&quot;"/>
+			<entity id="2" name="BlogPostPostauthors_dbs" fq-name="BlogPostPostauthors_dbs"/>
+			<entity id="3" name="BlogPosts_dbs" fq-name="BlogPosts_dbs"/>
+			<entity id="4" name="Categories_dbs" fq-name="Categories_dbs"/>
+			<entity id="5" name="Cities_dbs" fq-name="Cities_dbs"/>
+			<entity id="6" name="CommentAuthors_dbs" fq-name="CommentAuthors_dbs"/>
+			<entity id="7" name="Comments_dbs" fq-name="Comments_dbs"/>
+			<entity id="8" name="PostAuthors_dbs" fq-name="PostAuthors_dbs"/>
+			<entity id="9" name="PostCategories_dbs" fq-name="PostCategories_dbs"/>
+		</data-source>
+	</entities>
+	<relations>
+		<relation name="FK_BlogPostPostauthors_dbs_BlogPosts_dbs_BlogPostId" fq-name="BlogPostPostauthors_dbs.FK_BlogPostPostauthors_dbs_BlogPosts_dbs_BlogPostId" type="fk" pk-ref="3" fk-ref="2"/>
+		<relation name="FK_Comments_dbs_BlogPosts_dbs_BlogPostId" fq-name="Comments_dbs.FK_Comments_dbs_BlogPosts_dbs_BlogPostId" type="fk" pk-ref="3" fk-ref="7"/>
+		<relation name="FK_PostCategories_dbs_BlogPosts_dbs_BlogPostId" fq-name="PostCategories_dbs.FK_PostCategories_dbs_BlogPosts_dbs_BlogPostId" type="fk" pk-ref="3" fk-ref="9"/>
+		<relation name="FK_PostCategories_dbs_Categories_dbs_CategoryId" fq-name="PostCategories_dbs.FK_PostCategories_dbs_Categories_dbs_CategoryId" type="fk" pk-ref="4" fk-ref="9"/>
+		<relation name="FK_PostAuthors_dbs_Cities_dbs_AuthorPostCityId" fq-name="PostAuthors_dbs.FK_PostAuthors_dbs_Cities_dbs_AuthorPostCityId" type="fk" pk-ref="5" fk-ref="8"/>
+		<relation name="FK_Comments_dbs_CommentAuthors_dbs_CommenterId" fq-name="Comments_dbs.FK_Comments_dbs_CommentAuthors_dbs_CommenterId" type="fk" pk-ref="6" fk-ref="7"/>
+		<relation name="FK_BlogPostPostauthors_dbs_PostAuthors_dbs_PostAuthorId" fq-name="BlogPostPostauthors_dbs.FK_BlogPostPostauthors_dbs_PostAuthors_dbs_PostAuthorId" type="fk" pk-ref="8" fk-ref="2"/>
+	</relations>
+</diagram>

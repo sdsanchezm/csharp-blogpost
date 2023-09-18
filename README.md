@@ -15,6 +15,29 @@ erDiagram
     PostCategory ||--o{ Category : places
 ~~~
 
+
+### Schema from Dbeaver
+
+![ER Diagram1](./assets/sqliteDiagram_v1.jpg "Entity Relationship Diagram")
+
+### Schema from MS SQL Server
+
+![ER Diagram2](./assets/sqliteDiagram_v2.jpg "Entity Relationship Diagram from MS SQL Server")
+
+
 ## Misc
 
-- 
+- ef core [dotnet add package Microsoft.EntityFrameworkCore --version 7.0.3]
+- ef design [dotnet add package Microsoft.EntityFrameworkCore.Design --version 7.0.3]
+- ef sqlite [dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 7.0.3]
+    - [https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/7.0.3]
+- ef SQL Server [dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 7.0.3]
+
+### Commands EF
+
+- `dotnet ef migrations add InitialCreate1`
+- `dotnet ef database update`
+
+
+
+
