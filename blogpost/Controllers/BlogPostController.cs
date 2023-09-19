@@ -20,7 +20,20 @@ namespace blogpost.Controllers
         public IActionResult GetBlogPosts()
         {
             var posts = _blogPostService.GetBlogPosts();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(posts);
         }
+
+        [HttpGet]
+        public IActionResult GetBlogPost(int id)
+        {
+            var post = _blogPostService.GetBlogPost();
+            return Ok(post);
+        }
+
+
     }
 }
