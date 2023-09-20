@@ -7,5 +7,6 @@ namespace blogpost.Helpers
     public class MappingPosts
     {
         //CreateMap<BlogPost, BlogPostDto>();
+        //CreateMap<Category, CategoryDto>();
     }
 }

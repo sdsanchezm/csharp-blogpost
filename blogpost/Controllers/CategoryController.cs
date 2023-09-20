@@ -46,5 +46,21 @@ namespace blogpost.Controllers
             return Ok(c);
         }
 
+        [HttpGet("blogpost/{categoryId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
+        [ProducesResponseType(400)]
+        public ActionResult GetBlogPostByCategory(int categoryId)
+        {
+            // for mapper, in case implemented:
+            //var b = _mapper.Map<>(_categoryService.GetBlogPostByCategory(categoryId));
+
+            var b = _categoryService.GetBlogPostByCategory(categoryId);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok();
+        }
+
     }
 }
