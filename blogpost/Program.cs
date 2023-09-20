@@ -14,6 +14,8 @@ builder.Services.AddTransient<Seed>();
 
 // map the BlogPost Service with the IBlogPost Interface
 builder.Services.AddScoped<IBlogPostService, BlogPostService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICityService, CityService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
