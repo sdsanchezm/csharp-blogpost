@@ -17,6 +17,7 @@ builder.Services.AddScoped<IBlogPostService, BlogPostService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IPostAuthorService, PostAuthorService>();
+builder.Services.AddScoped<ICommentService, CommentService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
