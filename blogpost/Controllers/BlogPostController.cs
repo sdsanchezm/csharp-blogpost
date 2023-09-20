@@ -1,4 +1,5 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto;
+using blogpost.Interfaces;
 using blogpost.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,10 +23,18 @@ namespace blogpost.Controllers
         {
             var posts = _blogPostService.GetBlogPosts();
 
+            var posts2 = from b in _blogPostService.GetBlogPosts()
+                         select new BlogPostDto()
+                         {
+                             Id = b.Id,
+                             Title = b.Title,
+                             CreationDate = b.CreationDate
+                         };
+
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(posts);
+            return Ok(posts2);
         }
 
         [HttpGet("{blogPostId}")]
