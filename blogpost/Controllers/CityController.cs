@@ -56,22 +56,21 @@ namespace blogpost.Controllers
             return Ok(c);
         }
 
-        //[HttpGet("/authors/{authorId}")]
-        //[ProducesResponseType(200, Type = typeof(City))]
-        //[ProducesResponseType(400)]
-        //public IActionResult GetAuthorByCity(int id)
-        //{
+        [HttpGet("author/{cityId}")]
+        [ProducesResponseType(200, Type = typeof(City))]
+        [ProducesResponseType(400)]
+        public IActionResult getAuthorByCity(int cityId)
+        {
+            if (_cityService.CityExist(cityId))
+                return NotFound();
 
-        //    if (_cityService.CityExist(id))
-        //        return NotFound();
+            var authors = _cityService.GetAuthorsByCity(cityId);
 
-        //    var authors = _cityService.GetAuthorsByCity(id);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
+            return Ok(authors);
 
-        //    return Ok(authors);
-
-        //}
+        }
     }
 }
