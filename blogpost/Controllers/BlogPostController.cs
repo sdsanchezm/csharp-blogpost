@@ -2,8 +2,7 @@
 using blogpost.Interfaces;
 using blogpost.Models;
 using Microsoft.AspNetCore.Mvc;
-
-
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace blogpost.Controllers
 {
@@ -13,16 +12,24 @@ namespace blogpost.Controllers
     {
 
         private readonly IBlogPostService _blogPostService;
+        //private readonly IActionResultTypeMapper _mapper;
+        //public BlogPostController(IBlogPostService blogPostService, IMapper mapper)
         public BlogPostController(IBlogPostService blogPostService)
         {
             _blogPostService = blogPostService;
+            //_mapper = mapper;
         }
 
         [HttpGet]
         public IActionResult GetBlogPosts()
         {
-            var posts = _blogPostService.GetBlogPosts();
+            // AutoMapper
+            //var blogPost = _mapped.Map<List<BlogPostDto>>(_blogPostService.GetBlogPosts());
 
+            // regular Service call:
+            //var posts = _blogPostService.GetBlogPosts();
+
+            //Dto used in here:
             var posts2 = from b in _blogPostService.GetBlogPosts()
                          select new BlogPostDto()
                          {

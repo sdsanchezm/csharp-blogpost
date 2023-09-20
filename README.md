@@ -34,6 +34,9 @@ erDiagram
 - ef SQL Server [dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 7.0.3]
 - DTO documentation
     - [https://learn.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5]
+- AutoMapper Libs:
+    - [https://www.nuget.org/packages/AutoMapper]
+    - [https://www.nuget.org/packages/AutoMapper.Extensions.Microsoft.DependencyInjection]
 
 ### Commands EF
 
