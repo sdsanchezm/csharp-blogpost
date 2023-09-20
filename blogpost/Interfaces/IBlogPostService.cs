@@ -7,7 +7,7 @@ namespace blogpost.Interfaces
         ICollection<BlogPost> GetBlogPosts();
         BlogPost GetBlogPost(int blogPostId);
         BlogPost GetBlogPost(string blogPostTitle);
-        decimal GetBlogPostRate(int blogPostId);
+        decimal GetBlogPostAverageRate(int blogPostId);
         bool BlogPostExists(int blogPostId);
 
     }

@@ -32,6 +32,8 @@ erDiagram
 - ef sqlite [dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 7.0.3]
     - [https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/7.0.3]
 - ef SQL Server [dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 7.0.3]
+- DTO documentation
+    - [https://learn.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/part-5]
 
 ### Commands EF
 

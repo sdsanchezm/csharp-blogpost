@@ -1,3 +1,4 @@
+using blogpost;
 using blogpost.Data;
 using blogpost.Interfaces;
 using blogpost.Services;
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddTransient<Seed>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 // map the BlogPost Service with the IBlogPost Interface
@@ -23,6 +25,22 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 var app = builder.Build();
+
+// seed the data, the command is "dotnet run initialdata"
+if (args.Length == 1 && args[0].ToLower() == "initialdata")
+    SeedData(app);
+
+// this is the function that will run
+void SeedData(IHost app)
+{
+    var scopedFactory = app.Services.GetService<IServiceScopeFactory>();
+
+    using (var scope = scopedFactory.CreateScope())
+    {
+        var service = scope.ServiceProvider.GetService<Seed>();
+        service.SeedDataContext();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

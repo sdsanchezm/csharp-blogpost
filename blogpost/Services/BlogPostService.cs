@@ -28,7 +28,6 @@ namespace blogpost.Services
         {
             var bp = _dataContext.BlogPosts_dbs.Where(p => p.Title == blogPostTitle).FirstOrDefault();
             return bp;
-
         }
 
         public decimal GetBlogPostAverageRate(int blogPostId)

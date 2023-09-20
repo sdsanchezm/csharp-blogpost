@@ -1,4 +1,5 @@
 ﻿using blogpost.Interfaces;
+using blogpost.Models;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -27,11 +28,36 @@ namespace blogpost.Controllers
             return Ok(posts);
         }
 
-        [HttpGet]
-        public IActionResult GetBlogPost(int id)
+        [HttpGet("{blogPostId}")]
+        [ProducesResponseType(200, Type = typeof(BlogPost))]
+        [ProducesResponseType(400)]
+        public IActionResult GetBlogPost(int blogPostId)
         {
-            var post = _blogPostService.GetBlogPost();
+            if(!_blogPostService.BlogPostExists(blogPostId))
+                return NotFound("no posts here...");
+
+            var post = _blogPostService.GetBlogPost(blogPostId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             return Ok(post);
+        }
+
+        [HttpGet("{blogPostId}/postrate")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult GetBlogPostRating(int blogPostId)
+        {
+            if (!_blogPostService.BlogPostExists(blogPostId))
+                return NotFound("no posts here...");
+
+            var rate_post = _blogPostService.GetBlogPostAverageRate(blogPostId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(rate_post);
         }
 
 
