@@ -1,6 +1,7 @@
 using blogpost;
 using blogpost.Data;
 using blogpost.Interfaces;
+using blogpost.Models;
 using blogpost.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICityService, CityService>();
 builder.Services.AddScoped<IPostAuthorService, PostAuthorService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<ICommentAuthorService, CommentAuthorService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
