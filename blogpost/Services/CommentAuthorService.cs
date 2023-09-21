@@ -2,6 +2,9 @@
 using blogpost.Interfaces;
 using blogpost.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using System.Xml.Linq;
 
 namespace blogpost.Services
 {
@@ -21,7 +24,8 @@ namespace blogpost.Services
 
         public CommentAuthor GetCommentAuthor(int commentAuthorId)
         {
-            return _context.CommentAuthors_dbs.Where(p => p.Id == commentAuthorId).Include(ca => ca.Comments).FirstOrDefault();
+            //return _context.CommentAuthors_dbs.Where(p => p.Id == commentAuthorId).Include(ca => ca.Comments).FirstOrDefault();
+            return _context.CommentAuthors_dbs.Where(p => p.Id == commentAuthorId).FirstOrDefault();
         }
 
         public ICollection<CommentAuthor> GetCommentAuthors()
@@ -31,7 +35,19 @@ namespace blogpost.Services
 
         public ICollection<Comment> GetCommentsByCommentAuthor(int commentAuthorId)
         {
-            return _context.Comments_dbs.Where(p => p.Commenter.Id == commentAuthorId).ToList();
+            //var options = new JsonSerializerOptions
+            //{
+            //    ReferenceHandler = ReferenceHandler.Preserve, // to handle cyclic references
+            //};
+
+            var c = _context.Comments_dbs.Where(p => p.Commenter.Id == commentAuthorId).ToList();
+
+            // serialzie comments
+            //var serializedComments = JsonSerializer.Serialize(c, options);
+
+            //return serializedComments;
+            return c;
+
         }
     }
 }

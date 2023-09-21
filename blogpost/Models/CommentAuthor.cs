@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public ICollection<Comment> Comments { get; set;}
+        public virtual ICollection<Comment> Comments { get; set;}
 
     }
 

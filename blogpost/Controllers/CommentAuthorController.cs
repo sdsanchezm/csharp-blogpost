@@ -1,6 +1,10 @@
 ﻿using blogpost.Interfaces;
 using blogpost.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
 
 namespace blogpost.Controllers
 {
@@ -44,18 +48,24 @@ namespace blogpost.Controllers
         }
 
         [HttpGet("{commentAuthorId}/comments")]
-        [ProducesResponseType(200, Type = typeof(Comment))]
-        [ProducesResponseType(400)]
+        //[ProducesResponseType(200, Type = typeof(Comment))]
+        //[ProducesResponseType(400)]
         public IActionResult GetCommentsByCommentAuthor(int commentAuthorId)
         {
             if (!_commentAuthorService.ExistCommentAuthor(commentAuthorId))
                 return NotFound();
 
+            // one way to resolve this issue
+            //var options = new JsonSerializerOptions { ReferenceHandler = ReferenceHandler.Preserve };
+
             var c = _commentAuthorService.GetCommentsByCommentAuthor(commentAuthorId);
+
+            //var serializedComments = JsonSerializer.Serialize(c, options);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            //return Ok(serializedComments);
             return Ok(c);
         }
     }
