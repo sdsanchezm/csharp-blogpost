@@ -1,4 +1,5 @@
-﻿using blogpost.Models;
+﻿using blogpost.Dto;
+using blogpost.Models;
 
 namespace blogpost.Interfaces
 {
@@ -8,5 +9,7 @@ namespace blogpost.Interfaces
         Category GetCategory(int categoryId);
         ICollection<BlogPost> GetBlogPostByCategory(int categoryId);
         bool CategoryExist(int categoryId);
+        bool CreateCategory(CategoryDto category);
+        bool Save();
     }
 }

@@ -1,4 +1,5 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto;
+using blogpost.Interfaces;
 using blogpost.Models;
 using blogpost.Data;
 
@@ -33,6 +34,27 @@ namespace blogpost.Services
         public ICollection<Category> GetCategories()
         {
             return _dbContext.Categories_dbs.ToList();
+        }
+
+        public bool CreateCategory(CategoryDto category)
+        {
+            var cat = new Category
+            {
+                CategoryName = category.CategoryName,
+            };
+
+            // change Tracker
+            // add, updating, modifying 
+            // connected vs disconneted
+            // EntityState.Added = -> this is disconnected
+            _dbContext.Add(cat);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _dbContext.SaveChanges();
+            return saved > 0 ? true : false;
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto;
+using blogpost.Interfaces;
 using blogpost.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -60,6 +61,38 @@ namespace blogpost.Controllers
                 return BadRequest(ModelState);
 
             return Ok();
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCategory([FromBody] CategoryDto categoryNew)
+        {
+            if (categoryNew == null)
+                return BadRequest(ModelState);
+
+            var categoryLocal = _categoryService.GetCategories()
+                .Where(p => p.CategoryName.ToUpper() == categoryNew.CategoryName.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (categoryLocal != null)
+            {
+                ModelState.AddModelError("", "Category already Exist");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            if (!_categoryService.CreateCategory(categoryNew))
+            {
+                ModelState.AddModelError("", "Something went wrong while saving...");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created.");
+
+
         }
 
     }
