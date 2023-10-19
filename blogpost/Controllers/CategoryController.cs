@@ -72,7 +72,7 @@ namespace blogpost.Controllers
                 return BadRequest(ModelState);
 
             var categoryLocal = _categoryService.GetCategories()
-                .Where(p => p.CategoryName.ToUpper() == categoryNew.CategoryName.TrimEnd().ToUpper())
+                .Where(p => p.CategoryName.Trim().ToUpper() == categoryNew.CategoryName.TrimEnd().ToUpper())
                 .FirstOrDefault();
 
             if (categoryLocal != null)
@@ -86,12 +86,11 @@ namespace blogpost.Controllers
 
             if (!_categoryService.CreateCategory(categoryNew))
             {
-                ModelState.AddModelError("", "Something went wrong while saving...");
+                ModelState.AddModelError("", "Error while saving.");
                 return StatusCode(500, ModelState);
             }
 
-            return Ok("Successfully created.");
-
+            return Ok("Successfully created and saved.");
 
         }
 

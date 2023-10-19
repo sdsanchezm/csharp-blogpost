@@ -9,5 +9,8 @@ namespace blogpost.Interfaces
         City GetCityByAuthor(int cityId);
         ICollection<PostAuthor> GetAuthorsByCity(int cityId);
         bool CityExist(int cityId);
+
+        bool CreateCity(City city);
+        bool Save();
     }
 }

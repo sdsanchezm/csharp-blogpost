@@ -46,5 +46,17 @@ namespace blogpost.Services
             var city = _dbContext.PostAuthors_dbs.Where(c => c.Id == authorId).Select(p => p.AuthorPostCity).FirstOrDefault();
             return city;
         }
+
+        public bool CreateCity(City city)
+        {
+            _dbContext.Add(city);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _dbContext.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

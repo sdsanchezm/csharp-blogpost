@@ -1,5 +1,7 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto;
+using blogpost.Interfaces;
 using blogpost.Models;
+using blogpost.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace blogpost.Controllers
@@ -72,5 +74,44 @@ namespace blogpost.Controllers
             return Ok(authors);
 
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateCity([FromBody] CityDto cityNew)
+        {
+            if (cityNew == null)
+                return BadRequest(ModelState);
+
+            var cityLocal = _cityService.GetCities()
+                .Where(p => p.CityName.Trim().ToUpper() == cityNew.CityName.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (cityLocal != null)
+            {
+                ModelState.AddModelError("", "City already Exist");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            // instead of 
+            var nc = new City
+            {
+                CityName = cityNew.CityName,
+            };
+
+            if (!_cityService.CreateCity(nc))
+            {
+                ModelState.AddModelError("", "Error while saving.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created and saved.");
+
+        }
+
+
     }
 }

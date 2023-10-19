@@ -43,10 +43,10 @@ namespace blogpost.Services
                 CategoryName = category.CategoryName,
             };
 
-            // change Tracker
+            // change Tracker - is about:
             // add, updating, modifying 
-            // connected vs disconneted
-            // EntityState.Added = -> this is disconnected
+            // connected vs disconneted states
+            // EntityState.Added  -> this is disconnected state
             _dbContext.Add(cat);
             return Save();
         }
