@@ -42,5 +42,17 @@ namespace blogpost.Services
             var p = _context.PostAuthors_dbs.Any(p => p.Id == postAuthorId);
             return p;
         }
+
+        public bool CreatePostAuthor(PostAuthor postAuthorNew)
+        {
+            _context.Add(postAuthorNew);
+            return Save();
+        }
+
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

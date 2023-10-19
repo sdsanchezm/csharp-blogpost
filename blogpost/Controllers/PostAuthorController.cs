@@ -1,5 +1,7 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto;
+using blogpost.Interfaces;
 using blogpost.Models;
+using blogpost.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace blogpost.Controllers
@@ -9,9 +11,11 @@ namespace blogpost.Controllers
     public class PostAuthorController : Controller
     {
         private readonly IPostAuthorService _postAuthorService;
-        public PostAuthorController(IPostAuthorService postAuthorService)
+        private readonly ICityService _cityService;
+        public PostAuthorController(IPostAuthorService postAuthorService, ICityService cityService)
         {
             _postAuthorService = postAuthorService;
+            _cityService = cityService;
         }
 
         [HttpGet]
@@ -58,6 +62,50 @@ namespace blogpost.Controllers
                 return BadRequest(ModelState);
 
             return Ok(p);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePostAuthor([FromBody] PostAuthorDto postAuthorNew)
+        {
+            if (postAuthorNew == null)
+                return BadRequest(ModelState);
+
+            var postAuthorLocal = _postAuthorService.GetPostAuthors()
+                .Where(p => p.AuthorUsername.Trim().ToUpper() == postAuthorNew.AuthorUsername.TrimEnd().ToUpper())
+                .FirstOrDefault();
+
+            if (postAuthorLocal != null)
+            {
+                ModelState.AddModelError("", "City already Exist");
+                return StatusCode(422, ModelState);
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var cityId = postAuthorNew.CityId;
+            if (!_cityService.CityExist(cityId))
+                return NotFound("City Not Found");
+
+            var cityOfauthor = _cityService.GetCity(cityId);
+
+            var npa = new PostAuthor
+            {
+                AuthorUsername = postAuthorNew.AuthorUsername,
+                FavLanguage = postAuthorNew.FavLanguage,
+                AuthorPostCity = cityOfauthor
+            };
+
+            if (!_postAuthorService.CreatePostAuthor(npa))
+            {
+                ModelState.AddModelError("", "Error while saving.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created and saved.");
+
         }
 
     }
