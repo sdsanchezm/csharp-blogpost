@@ -1,8 +1,10 @@
-﻿using blogpost.Dto;
+﻿using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using blogpost.Dto;
+using blogpost.Dto.CreateDto;
 using blogpost.Interfaces;
 using blogpost.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
+using blogpost.Services;
 
 namespace blogpost.Controllers
 {
@@ -12,11 +14,15 @@ namespace blogpost.Controllers
     {
 
         private readonly IBlogPostService _blogPostService;
+        private readonly IPostAuthorService _postAuthorService;
+        private readonly ICategoryService _categoryService;
         //private readonly IActionResultTypeMapper _mapper;
         //public BlogPostController(IBlogPostService blogPostService, IMapper mapper)
-        public BlogPostController(IBlogPostService blogPostService)
+        public BlogPostController(IBlogPostService blogPostService, ICategoryService categoryService, IPostAuthorService postAuthorService)
         {
             _blogPostService = blogPostService;
+            _categoryService = categoryService;
+            _postAuthorService = postAuthorService;
             //_mapper = mapper;
         }
 
@@ -74,6 +80,48 @@ namespace blogpost.Controllers
                 return BadRequest(ModelState);
 
             return Ok(rate_post);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePostAuthor([FromBody] CreateBlogPostDtoIn blogPostNew)
+        {
+            if (blogPostNew == null)
+                return BadRequest(ModelState);
+
+            var blogPostLocal = _blogPostService.GetBlogPost(blogPostNew.Title);
+
+            if (blogPostLocal != null)
+            {
+                ModelState.AddModelError("", "Post was created before, it exist already.");
+                return StatusCode(422, ModelState);
+            }
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest();
+
+            // create a new BlogPost
+            var nbp = new BlogPost
+            {
+                Title = blogPostNew.Title,
+                CreationDate = DateTime.Now,
+            };
+
+            if (!_categoryService.CategoryExist(blogPostNew.CategoryId))
+                return NotFound("Category Not Found.");
+
+            if (!_postAuthorService.PostAuthorExist(blogPostNew.BlogPostAuthorId))
+                return NotFound("Author Not Found.");
+
+            if (!_blogPostService.CreateBlogPost(blogPostNew.BlogPostAuthorId, blogPostNew.CategoryId, nbp))
+            {
+                ModelState.AddModelError("", "ERROR, Data not saved.");
+                return StatusCode(500, ModelState);
+            }
+                
+            return Ok("Successfully created and saved.");
+
         }
 
 

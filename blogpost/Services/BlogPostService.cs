@@ -70,11 +70,11 @@ namespace blogpost.Services
             _dataContext.Add(blogPostPostauthorLocal);
             _dataContext.Add(blogPost);
 
-            return save();
+            return Save();
 
         }
 
-        public bool save()
+        public bool Save()
         {
             var saved = _dataContext.SaveChanges();
             return saved > 0 ? true : false;
