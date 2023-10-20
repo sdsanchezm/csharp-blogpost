@@ -10,5 +10,8 @@ namespace blogpost.Interfaces
         decimal GetBlogPostAverageRate(int blogPostId);
         bool BlogPostExists(int blogPostId);
 
+        bool CreateBlogPost(int authorId, int categoryId, BlogPost blogPost);
+        bool save();
+
     }
 }
