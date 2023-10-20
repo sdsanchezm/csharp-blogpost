@@ -121,6 +121,7 @@ namespace blogpost.Controllers
                 return StatusCode(500, ModelState);
             }
 
+            // return NoContent(); // this will not return but fronts expect a response and for usability
             return Ok("Resource Updated");
         }
 

@@ -58,5 +58,11 @@ namespace blogpost.Services
             var saved = _dbContext.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateCity(City city)
+        {
+            _dbContext.Update(city);
+            return Save();
+        }
     }
 }

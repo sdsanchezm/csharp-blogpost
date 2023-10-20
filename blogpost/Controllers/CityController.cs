@@ -3,6 +3,7 @@ using blogpost.Interfaces;
 using blogpost.Models;
 using blogpost.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
 
 namespace blogpost.Controllers
 {
@@ -109,7 +110,41 @@ namespace blogpost.Controllers
             }
 
             return Ok("Successfully created and saved.");
+        }
 
+        [HttpPut("{cityId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCategory(int cityId, [FromBody] CityDto cityUpdate)
+        {
+            if (cityUpdate == null)
+                return BadRequest(ModelState);
+
+            if (cityId != cityUpdate.Id)
+            {
+                ModelState.AddModelError("error", "there was an error with your request.");
+                return BadRequest(ModelState);
+            }
+
+            if (!_cityService.CityExist(cityId))
+                return NotFound("City was not found.");
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var c = _cityService.GetCity(cityId);
+
+            c.CityName = cityUpdate.CityName;
+
+            if (!_cityService.UpdateCity(c))
+            {
+                ModelState.AddModelError("", "Something went wrong updating category");
+                return StatusCode(500, ModelState);
+            }
+
+            // return NoContent();
+            return Ok("Resource was updated successfully.");
         }
 
 
