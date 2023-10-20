@@ -70,5 +70,11 @@ namespace blogpost.Services
 
             return false;
         }
+
+        public bool UpdateCommentAuthor(CommentAuthor commentAuthor)
+        {
+            _context.Update(commentAuthor);
+            return Save();
+        }
     }
 }

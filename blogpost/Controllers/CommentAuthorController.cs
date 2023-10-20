@@ -1,12 +1,13 @@
-﻿using blogpost.Dto.CreateDto;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using blogpost.Dto.CreateDto;
+using blogpost.Dto.UpdateDto;
 using blogpost.Interfaces;
 using blogpost.Models;
 using blogpost.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Xml.Linq;
 
 namespace blogpost.Controllers
 {
@@ -101,6 +102,43 @@ namespace blogpost.Controllers
             }
 
             return Ok("Successfully created and saved.");
+        }
+
+        [HttpPut("{authorId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateCommentAuthor(int authorId, [FromBody] UpdateCommentAuthorDto updateCommentAuthor)
+        {
+            if (updateCommentAuthor == null)
+            {
+                ModelState.AddModelError("", "Data missing.");
+                return BadRequest(ModelState);
+            }
+
+            if (authorId != updateCommentAuthor.Id)
+            {
+                ModelState.AddModelError("", "Id differs.");
+                return BadRequest(ModelState);
+            }
+
+            if (!_commentAuthorService.ExistCommentAuthor(authorId))
+                return NotFound("Entity does not exist.");
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest("Error ocurred.");
+
+            var ca = _commentAuthorService.GetCommentAuthor(authorId);
+            ca.Username = updateCommentAuthor.Username;
+
+            if (!_commentAuthorService.UpdateCommentAuthor(ca))
+            {
+                ModelState.AddModelError("", "Something went wrong updating blog post");
+                return StatusCode(500, ModelState);
+            }
+
+            // return NoContent();
+            return Ok("Record Saved.");
         }
 
     }
