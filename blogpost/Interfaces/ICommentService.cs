@@ -8,5 +8,7 @@ namespace blogpost.Interfaces
         Comment GetComment(int commentId);
         bool ExistComment(int commentId);
         ICollection<Comment> GetCommentsOfABlogPost(int blogPostId);
+        bool CreateComment(int commenterId, int postId, Comment comment);
+        bool Save();
     }
 }

@@ -35,5 +35,22 @@ namespace blogpost.Services
             // returning a List of comments, as specified in the retuning type of the method here
             return _context.Comments_dbs.Where(p => p.BlogPost.Id == blogPostId).ToList();
         }
+
+        public bool CreateComment(int commenterId, int postId, Comment comment)
+        {
+            var c = _context.CommentAuthors_dbs.Where(p => p.Id == commenterId);
+
+            var bp = _context.BlogPostPostauthors_dbs.Where(p => p.BlogPostId == postId);
+
+            comment.Commenter = c;
+
+            _context.Comments_dbs.Add(comment);
+            return Save();
+        }
+        public bool Save()
+        {
+            var saved = _context.SaveChanges();
+            return saved > 0 ? true : false;
+        }
     }
 }

@@ -1,6 +1,8 @@
-﻿using blogpost.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using blogpost.Dto.CreateDto;
+using blogpost.Interfaces;
 using blogpost.Models;
-using Microsoft.AspNetCore.Mvc;
+using blogpost.Services;
 
 namespace blogpost.Controllers
 {
@@ -9,9 +11,13 @@ namespace blogpost.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentService _commentService;
-        public CommentController(ICommentService commentService)
+        private readonly IBlogPostService _blogPostService;
+        private readonly ICommentAuthorService _commentAuthorService;
+        public CommentController(ICommentService commentService, IBlogPostService blogPostService, ICommentAuthorService commentAuthorService)
         {
             _commentService = commentService;
+            _blogPostService = blogPostService;
+            _commentAuthorService = commentAuthorService;
         }
 
         [HttpGet]
@@ -20,7 +26,7 @@ namespace blogpost.Controllers
         {
             var c = _commentService.GetComments();
 
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             return Ok(c);
@@ -57,6 +63,45 @@ namespace blogpost.Controllers
                 return BadRequest(ModelState);
 
             return Ok(comments);
+
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePostAuthor([FromBody] CreateCommentDtoIn commentNew)
+        {
+            if (commentNew == null)
+                return BadRequest(ModelState);
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest();
+
+            if (_blogPostService.GetBlogPost(commentNew.postId) == null)
+            {
+                return NotFound("Post Not Found.");
+            }
+
+            if (_commentAuthorService.GetCommentAuthor(commentNew.commentAuthorId) == null)
+            {
+                return NotFound("Commenter Author Not Found.");
+            }
+
+            // create a new BlogPost
+            var nc = new Comment
+            {
+                CommentTitle = commentNew.CommentTitle,
+                CommentContent = commentNew.CommentContent,
+                Rate = commentNew.Rate,
+            };
+
+            if (!_commentService.CreateComment(commentNew.commentAuthorId, commentNew.postId, nc))
+            {
+                ModelState.AddModelError("", "ERROR, Data not saved.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created and saved.");
 
         }
 
