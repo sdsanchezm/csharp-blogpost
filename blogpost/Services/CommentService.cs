@@ -38,13 +38,21 @@ namespace blogpost.Services
 
         public bool CreateComment(int commenterId, int postId, Comment comment)
         {
-            var c = _context.CommentAuthors_dbs.Where(p => p.Id == commenterId);
+            var c = _context.CommentAuthors_dbs.Where(p => p.Id == commenterId).FirstOrDefault();
 
-            var bp = _context.BlogPostPostauthors_dbs.Where(p => p.BlogPostId == postId);
+            if (c == null)
+                return false;
+
+            var bp = _context.BlogPosts_dbs.Where(p => p.Id == postId).FirstOrDefault();
+
+            if (bp == null)
+                return false;
 
             comment.Commenter = c;
+            comment.BlogPost = bp;
 
             _context.Comments_dbs.Add(comment);
+
             return Save();
         }
         public bool Save()

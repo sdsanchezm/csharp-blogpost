@@ -84,10 +84,10 @@ namespace blogpost.Controllers
 
             if (_commentAuthorService.GetCommentAuthor(commentNew.commentAuthorId) == null)
             {
-                return NotFound("Commenter Author Not Found.");
+                return NotFound("Comment Author Not Found.");
             }
 
-            // create a new BlogPost
+            // create a new Comment
             var nc = new Comment
             {
                 CommentTitle = commentNew.CommentTitle,

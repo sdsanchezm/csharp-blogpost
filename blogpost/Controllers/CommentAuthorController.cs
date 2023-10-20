@@ -1,5 +1,7 @@
-﻿using blogpost.Interfaces;
+﻿using blogpost.Dto.CreateDto;
+using blogpost.Interfaces;
 using blogpost.Models;
+using blogpost.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
@@ -68,5 +70,38 @@ namespace blogpost.Controllers
             //return Ok(serializedComments);
             return Ok(c);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreatePostAuthor([FromBody] CreateCommentAuthorDtoIn commentAuthorNew)
+        {
+            if (commentAuthorNew == null)
+                return BadRequest(ModelState);
+
+            if (_commentAuthorService.ExistCommentAuthorByUsername(commentAuthorNew.Username))
+            {
+                ModelState.AddModelError("", "Comment Author already exist.");
+                return StatusCode(422, ModelState);
+            }
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest();
+
+            // create a new Comment author
+            var nca = new CommentAuthor
+            {
+                Username = commentAuthorNew.Username
+            };
+
+            if (!_commentAuthorService.CreateCommentAuthor(nca))
+            {
+                ModelState.AddModelError("", "ERROR, Data not saved.");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("Successfully created and saved.");
+        }
+
     }
 }
