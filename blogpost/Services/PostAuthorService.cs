@@ -54,5 +54,11 @@ namespace blogpost.Services
             var saved = _context.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdatePostAuthor(PostAuthor postAuthorUpdate)
+        {
+            _context.Update(postAuthorUpdate);
+            return Save();
+        }
     }
 }

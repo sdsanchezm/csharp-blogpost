@@ -7,6 +7,5 @@
         public string FavLanguage { get; set; }
         public City AuthorPostCity { get; set; }
         public ICollection<BlogPostPostauthor> BlogPostPostauthors { get; set; }
-
     }
 }

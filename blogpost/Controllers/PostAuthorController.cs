@@ -108,5 +108,40 @@ namespace blogpost.Controllers
 
         }
 
+        [HttpPut("{authorId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateOwner(int authorId, [FromBody] PostAuthorDto postAuthorUpdate)
+        {
+            if (postAuthorUpdate == null)
+                return BadRequest(ModelState);
+
+            if (authorId != postAuthorUpdate.Id)
+                return BadRequest(ModelState);
+
+            if (!_postAuthorService.PostAuthorExist(authorId))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var pa = _postAuthorService.GetPostAuthor(postAuthorUpdate.Id);
+            var city = _cityService.GetCity(postAuthorUpdate.CityId);
+
+            pa.AuthorUsername = postAuthorUpdate.AuthorUsername;
+            pa.FavLanguage = postAuthorUpdate.FavLanguage;
+            pa.AuthorPostCity = city;
+
+            if (!_postAuthorService.UpdatePostAuthor(pa))
+            {
+                ModelState.AddModelError("", "Something went wrong updating owner");
+                return StatusCode(500, ModelState);
+            }
+
+            // return NoContent();
+            return Ok("Resource was saved.");
+        }
+
     }
 }

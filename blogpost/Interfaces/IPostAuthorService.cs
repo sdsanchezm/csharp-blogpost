@@ -10,6 +10,7 @@ namespace blogpost.Interfaces
         ICollection<PostAuthor> GetPostAuthorByBlogPostId(int blogPostId);
         ICollection<BlogPost> GetBlogPostByPostAuthor(int postAuthorId);
         bool CreatePostAuthor(PostAuthor postAuthorNew);
+        bool UpdatePostAuthor(PostAuthor postAuthorUpdate);
         bool Save();
     }
 }
