@@ -9,7 +9,8 @@ namespace blogpost.Interfaces
         Category GetCategory(int categoryId);
         ICollection<BlogPost> GetBlogPostByCategory(int categoryId);
         bool CategoryExist(int categoryId);
-        bool CreateCategory(CategoryDto category);
+        bool CreateCategory(string categoryName);
+        bool UpdateCategory(Category category);
         bool Save();
     }
 }

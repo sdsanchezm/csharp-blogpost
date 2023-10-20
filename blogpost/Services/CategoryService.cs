@@ -36,11 +36,11 @@ namespace blogpost.Services
             return _dbContext.Categories_dbs.ToList();
         }
 
-        public bool CreateCategory(CategoryDto category)
+        public bool CreateCategory(string categoryName)
         {
             var cat = new Category
             {
-                CategoryName = category.CategoryName,
+                CategoryName = categoryName,
             };
 
             // change Tracker - is about:
@@ -55,6 +55,12 @@ namespace blogpost.Services
         {
             var saved = _dbContext.SaveChanges();
             return saved > 0 ? true : false;
+        }
+
+        public bool UpdateCategory(Category category)
+        {
+            _dbContext.Update(category);
+            return Save();
         }
     }
 }
