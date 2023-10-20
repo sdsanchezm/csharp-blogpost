@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using blogpost.Dto;
 using blogpost.Dto.CreateDto;
+using blogpost.Dto.UpdateDto;
 using blogpost.Interfaces;
 using blogpost.Models;
 using blogpost.Services;
@@ -121,7 +122,46 @@ namespace blogpost.Controllers
             }
                 
             return Ok("Successfully created and saved.");
+        }
 
+        [HttpPut("{blogPostId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateBlogPostPost(int blogPostId, [FromBody] UpdateBlogPostDto updatedBlogPost)
+        {
+            if (updatedBlogPost == null)
+            {
+                ModelState.AddModelError("", "Data missing.");
+                return BadRequest(ModelState);
+            }
+
+            if (blogPostId != updatedBlogPost.Id)
+            {
+                ModelState.AddModelError("", "Id differs.");
+                return BadRequest(ModelState);
+            }
+
+            if (!_blogPostService.BlogPostExists(blogPostId))
+                return NotFound("Entity does not exist.");
+
+            //if (!ModelState.IsValid)
+            //    return BadRequest("Error ocurred.");
+
+            var bp = _blogPostService.GetBlogPost(blogPostId);
+            bp.Title = updatedBlogPost.Title;
+
+            var authorId = updatedBlogPost.authorId;
+            var categoryId = updatedBlogPost.categoryId;
+
+            if (!_blogPostService.UpdateBlogPost(authorId, categoryId, bp))
+            {
+                ModelState.AddModelError("", "Something went wrong updating blog post");
+                return StatusCode(500, ModelState);
+            }
+
+            // return NoContent();
+            return Ok("Record Saved.");
         }
 
 

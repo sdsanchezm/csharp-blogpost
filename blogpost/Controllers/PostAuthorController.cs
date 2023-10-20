@@ -112,7 +112,7 @@ namespace blogpost.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateOwner(int authorId, [FromBody] PostAuthorDto postAuthorUpdate)
+        public IActionResult UpdateAuthor(int authorId, [FromBody] PostAuthorDto postAuthorUpdate)
         {
             if (postAuthorUpdate == null)
                 return BadRequest(ModelState);

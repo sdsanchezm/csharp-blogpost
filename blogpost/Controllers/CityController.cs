@@ -116,7 +116,7 @@ namespace blogpost.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int cityId, [FromBody] CityDto cityUpdate)
+        public IActionResult UpdateCity(int cityId, [FromBody] CityDto cityUpdate)
         {
             if (cityUpdate == null)
                 return BadRequest(ModelState);

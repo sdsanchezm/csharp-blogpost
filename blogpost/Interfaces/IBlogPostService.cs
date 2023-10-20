@@ -9,8 +9,8 @@ namespace blogpost.Interfaces
         BlogPost GetBlogPost(string blogPostTitle);
         decimal GetBlogPostAverageRate(int blogPostId);
         bool BlogPostExists(int blogPostId);
-
         bool CreateBlogPost(int authorId, int categoryId, BlogPost blogPost);
+        bool UpdateBlogPost(int authorId, int categoryId, BlogPost blogPost);
         bool Save();
 
     }

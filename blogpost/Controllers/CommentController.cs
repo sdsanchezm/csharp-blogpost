@@ -69,7 +69,7 @@ namespace blogpost.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreatePostAuthor([FromBody] CreateCommentDtoIn commentNew)
+        public IActionResult CreateComment([FromBody] CreateCommentDtoIn commentNew)
         {
             if (commentNew == null)
                 return BadRequest(ModelState);

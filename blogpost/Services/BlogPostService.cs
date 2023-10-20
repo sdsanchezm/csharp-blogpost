@@ -79,5 +79,27 @@ namespace blogpost.Services
             var saved = _dataContext.SaveChanges();
             return saved > 0 ? true : false;
         }
+
+        public bool UpdateBlogPost(int authorId, int categoryId, BlogPost blogPost)
+        {
+            //var bpLocal = _dataContext.BlogPosts_dbs.Where(p => p.Id == blogPost.Id).FirstOrDefault();
+            //if (bpLocal == null)
+            //    return false;
+
+            var categorylocal = _dataContext.Categories_dbs.Where(p => p.Id == categoryId).FirstOrDefault();
+            if (categorylocal ==  null)
+                return false;
+
+            var authorLocal = _dataContext.PostAuthors_dbs.Where(p => p.Id == authorId).FirstOrDefault();
+            if (authorLocal == null)
+                return false;
+
+            // blogPost.Title = blogPost.Title;
+            blogPost.PostCategories = blogPost.PostCategories;
+            blogPost.BlogPostPostauthors = blogPost.BlogPostPostauthors;
+
+            _dataContext.Update(blogPost);
+            return Save();
+        }
     }
 }
