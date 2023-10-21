@@ -62,5 +62,12 @@ namespace blogpost.Services
             _dbContext.Update(category);
             return Save();
         }
+
+        public bool DeleteCategory(int categoryId)
+        {
+            var c = _dbContext.Categories_dbs.Where(p => p.Id == categoryId).FirstOrDefault();
+            _dbContext.Remove(c);
+            return Save();
+        }
     }
 }

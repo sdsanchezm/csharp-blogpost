@@ -11,6 +11,7 @@ namespace blogpost.Interfaces
         bool CategoryExist(int categoryId);
         bool CreateCategory(string categoryName);
         bool UpdateCategory(Category category);
+        bool DeleteCategory(int categoryId);
         bool Save();
     }
 }

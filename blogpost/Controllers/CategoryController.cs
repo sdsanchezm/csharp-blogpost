@@ -10,10 +10,12 @@ namespace blogpost.Controllers
     public class CategoryController : Controller
     {
         ICategoryService _categoryService;
+        IBlogPostService _blogPostService;
         // for mapper, have to inject the mapper object here
-        public CategoryController(ICategoryService categoryService)
+        public CategoryController(ICategoryService categoryService, IBlogPostService blogPostService)
         {
             _categoryService = categoryService;
+            _blogPostService = blogPostService;
         }
 
         [HttpGet]
@@ -123,6 +125,34 @@ namespace blogpost.Controllers
 
             // return NoContent(); // this will not return but fronts expect a response and for usability
             return Ok("Resource Updated");
+        }
+
+        [HttpDelete("{categoryId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCategory(int categoryId)
+        {
+            if (!_categoryService.CategoryExist(categoryId))
+            {
+                return NotFound("Resource does not exist.");
+            }
+
+            if (_categoryService.GetBlogPostByCategory(categoryId) != null)
+            {
+                return BadRequest("Category is in use, Cannot be deleted.");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_categoryService.DeleteCategory(categoryId))
+            {
+                ModelState.AddModelError("", "Something went wrong deleting category");
+            }
+
+            // return NoContent();
+            return Ok("Record Deleted");
         }
 
     }
