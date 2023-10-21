@@ -64,5 +64,12 @@ namespace blogpost.Services
             _dbContext.Update(city);
             return Save();
         }
+
+        public bool DeleteCity(int cityId)
+        {
+            var c = _dbContext.Cities_dbs.Where(p => p.Id == cityId).FirstOrDefault();
+            _dbContext.Remove(c);
+            return Save();
+        }
     }
 }

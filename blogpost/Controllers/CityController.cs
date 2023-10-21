@@ -44,7 +44,7 @@ namespace blogpost.Controllers
             return Ok(c);
         }
 
-        [HttpGet("author/{authorId}")]
+        [HttpGet("citybyauthor/{authorId}")]
         [ProducesResponseType(200, Type = typeof(City))]
         [ProducesResponseType(400)]
         public IActionResult GetCityByAuthor(int authorId)
@@ -59,12 +59,12 @@ namespace blogpost.Controllers
             return Ok(c);
         }
 
-        [HttpGet("author/{cityId}")]
+        [HttpGet("authorbycity/{cityId}")]
         [ProducesResponseType(200, Type = typeof(City))]
         [ProducesResponseType(400)]
         public IActionResult getAuthorByCity(int cityId)
         {
-            if (_cityService.CityExist(cityId))
+            if (!_cityService.CityExist(cityId))
                 return NotFound();
 
             var authors = _cityService.GetAuthorsByCity(cityId);
@@ -145,6 +145,34 @@ namespace blogpost.Controllers
 
             // return NoContent();
             return Ok("Resource was updated successfully.");
+        }
+
+        [HttpDelete("{cityId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCity(int cityId)
+        {
+            if (!_cityService.CityExist(cityId))
+            {
+                return NotFound("Resource does not exist.");
+            }
+
+            if (_cityService.GetAuthorsByCity(cityId).ToArray().Length != 0)
+            {
+                return BadRequest("Resource is being used, cannot be deleted.");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_cityService.DeleteCity(cityId))
+            {
+                ModelState.AddModelError("error", "Something went wrong deleting city.");
+            }
+
+            // return NoContent();
+            return Ok("Record Deleted");
         }
 
 

@@ -11,6 +11,7 @@ namespace blogpost.Interfaces
         bool CityExist(int cityId);
         bool CreateCity(City city);
         bool UpdateCity(City city);
+        bool DeleteCity(int cityId);
         bool Save();
     }
 }
