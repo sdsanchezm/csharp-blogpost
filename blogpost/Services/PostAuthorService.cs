@@ -60,5 +60,12 @@ namespace blogpost.Services
             _context.Update(postAuthorUpdate);
             return Save();
         }
+
+        public bool DeletePostAuthor(int postAuthorId)
+        {
+            var pa = _context.PostAuthors_dbs.Where(p => p.Id == postAuthorId).FirstOrDefault();
+            _context.Remove(pa);
+            return Save();
+        }
     }
 }
