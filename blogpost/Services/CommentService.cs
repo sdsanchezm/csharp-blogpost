@@ -73,5 +73,12 @@ namespace blogpost.Services
             _context.Remove(c);
             return Save();
         }
+
+        public bool DeleteComments(List<Comment> deleteComments)
+        {
+            _context.RemoveRange(deleteComments);
+            return Save();
+        }
+
     }
 }

@@ -17,13 +17,15 @@ namespace blogpost.Controllers
         private readonly IBlogPostService _blogPostService;
         private readonly IPostAuthorService _postAuthorService;
         private readonly ICategoryService _categoryService;
+        private readonly ICommentService _commentService;
         //private readonly IActionResultTypeMapper _mapper;
         //public BlogPostController(IBlogPostService blogPostService, IMapper mapper)
-        public BlogPostController(IBlogPostService blogPostService, ICategoryService categoryService, IPostAuthorService postAuthorService)
+        public BlogPostController(IBlogPostService blogPostService, ICategoryService categoryService, IPostAuthorService postAuthorService, ICommentService commentService)
         {
             _blogPostService = blogPostService;
             _categoryService = categoryService;
             _postAuthorService = postAuthorService;
+            _commentService = commentService;
             //_mapper = mapper;
         }
 
@@ -162,6 +164,36 @@ namespace blogpost.Controllers
 
             // return NoContent();
             return Ok("Record Saved.");
+        }
+
+        [HttpDelete("{blogPostId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteBlogPost(int blogPostId)
+        {
+            if (!_blogPostService.BlogPostExists(blogPostId))
+            {
+                return NotFound("The Post does not exist.");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var deleteComments = _commentService.GetCommentsOfABlogPost(blogPostId);
+
+            if (!_commentService.DeleteComments(deleteComments.ToList()))
+            {
+                ModelState.AddModelError("Error", "Something went wrong when deleting comments");
+            }
+
+            if (!_blogPostService.DeleteBlogPost(blogPostId))
+            {
+                ModelState.AddModelError("Error", "Something went wrong deleting Blog Post");
+            }
+
+            // return NoContent();
+            return Ok("Resource Deleted");
         }
 
 

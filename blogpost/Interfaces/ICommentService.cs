@@ -11,6 +11,7 @@ namespace blogpost.Interfaces
         bool CreateComment(int commenterId, int postId, Comment comment);
         bool UpdateComment(Comment comment);
         bool DeleteComment(int commentId);
+        bool DeleteComments(List<Comment> deleteComments);
         bool Save();
     }
 }

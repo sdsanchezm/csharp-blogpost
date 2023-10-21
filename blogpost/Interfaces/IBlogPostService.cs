@@ -11,6 +11,7 @@ namespace blogpost.Interfaces
         bool BlogPostExists(int blogPostId);
         bool CreateBlogPost(int authorId, int categoryId, BlogPost blogPost);
         bool UpdateBlogPost(int authorId, int categoryId, BlogPost blogPost);
+        bool DeleteBlogPost(int blogPostId);
         bool Save();
 
     }

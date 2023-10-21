@@ -101,5 +101,12 @@ namespace blogpost.Services
             _dataContext.Update(blogPost);
             return Save();
         }
+
+        public bool DeleteBlogPost(int blogPostId)
+        {
+            var bp = _dataContext.BlogPosts_dbs.Where(p => p.Id == blogPostId).FirstOrDefault();
+            _dataContext.Remove(bp);
+            return Save();
+        }
     }
 }
