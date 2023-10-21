@@ -10,6 +10,7 @@ namespace blogpost.Interfaces
         ICollection<Comment> GetCommentsOfABlogPost(int blogPostId);
         bool CreateComment(int commenterId, int postId, Comment comment);
         bool UpdateComment(Comment comment);
+        bool DeleteComment(int commentId);
         bool Save();
     }
 }

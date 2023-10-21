@@ -146,5 +146,28 @@ namespace blogpost.Controllers
             return Ok("Record Saved.");
         }
 
+        [HttpDelete("{commentId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteComment(int commentId)
+        {
+            if (!_commentService.ExistComment(commentId))
+            {
+                return NotFound("Resource not found.");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_commentService.DeleteComment(commentId))
+            {
+                ModelState.AddModelError("error", "Something went wrong deleting owner");
+            }
+
+            // return NoContent();
+            return Ok("Data Deleted.");
+        }
+
     }
 }

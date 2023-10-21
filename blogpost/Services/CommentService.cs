@@ -66,5 +66,12 @@ namespace blogpost.Services
             _context.Update(comment);
             return Save();
         }
+
+        public bool DeleteComment(int commentId)
+        {
+            var c = _context.Comments_dbs.Where(p => p.Id == commentId).FirstOrDefault();
+            _context.Remove(c);
+            return Save();
+        }
     }
 }
