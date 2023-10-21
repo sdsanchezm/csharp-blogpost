@@ -12,6 +12,7 @@ namespace blogpost.Interfaces
         ICollection<Comment> GetCommentsByCommentAuthor(int commentAuthorId);
         public bool CreateCommentAuthor(CommentAuthor commentAuthor);
         bool UpdateCommentAuthor(CommentAuthor commentAuthor);
+        bool DeleteCommentAuthor(int commentAuthorId);
         public bool Save();
     }
 }

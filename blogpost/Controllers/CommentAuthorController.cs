@@ -141,5 +141,33 @@ namespace blogpost.Controllers
             return Ok("Record Saved.");
         }
 
+        [HttpDelete("{commentAuthorId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteCommentAuthor(int commentAuthorId)
+        {
+            if (!_commentAuthorService.ExistCommentAuthor(commentAuthorId))
+            {
+                return NotFound("resource not found.");
+            }
+
+            if (_commentAuthorService.GetCommentsByCommentAuthor(commentAuthorId).ToArray().Length != 0)
+            {
+                return BadRequest("Resource is being used, cannot be deleted.");
+            }
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_commentAuthorService.DeleteCommentAuthor(commentAuthorId))
+            {
+                ModelState.AddModelError("Error", "Something went wrong deleting reviewer");
+            }
+
+            // return NoContent();
+            return Ok("Resource deleted.");
+        }
+
     }
 }
