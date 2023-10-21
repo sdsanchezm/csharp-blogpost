@@ -125,8 +125,8 @@ namespace blogpost.Controllers
             if (!_commentAuthorService.ExistCommentAuthor(authorId))
                 return NotFound("Entity does not exist.");
 
-            //if (!ModelState.IsValid)
-            //    return BadRequest("Error ocurred.");
+            if (!ModelState.IsValid)
+                return BadRequest("Error ocurred.");
 
             var ca = _commentAuthorService.GetCommentAuthor(authorId);
             ca.Username = updateCommentAuthor.Username;

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using blogpost.Dto.CreateDto;
+using blogpost.Dto.UpdateDto;
 using blogpost.Interfaces;
 using blogpost.Models;
 using blogpost.Services;
@@ -103,6 +104,46 @@ namespace blogpost.Controllers
 
             return Ok("Successfully created and saved.");
 
+        }
+
+        [HttpPut("{commentId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateComment(int commentId, [FromBody] UpdateCommentDto updateComment)
+        {
+            if (updateComment == null)
+            {
+                ModelState.AddModelError("Error", "Data missing.");
+                return BadRequest(ModelState);
+            }
+
+            if (commentId != updateComment.Id)
+            {
+                ModelState.AddModelError("Error", "Id differs.");
+                return BadRequest(ModelState);
+            }
+
+            if (!_commentService.ExistComment(commentId))
+                return NotFound("Entity does not exist.");
+
+            if (!ModelState.IsValid)
+                return BadRequest("Error ocurred.");
+
+            var c = _commentService.GetComment(commentId);
+
+            c.CommentTitle = updateComment.CommentTitle;
+            c.CommentContent = updateComment.CommentContent;
+            c.Rate = updateComment.Rate;
+
+            if (!_commentService.UpdateComment(c))
+            {
+                ModelState.AddModelError("", "Something went wrong updating review");
+                return StatusCode(500, ModelState);
+            }
+
+            // return NoContent();
+            return Ok("Record Saved.");
         }
 
     }
