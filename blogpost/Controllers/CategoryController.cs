@@ -62,7 +62,7 @@ namespace blogpost.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok();
+            return Ok(b);
         }
 
         [HttpPost]

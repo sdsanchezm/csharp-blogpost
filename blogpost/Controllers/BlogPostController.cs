@@ -44,6 +44,7 @@ namespace blogpost.Controllers
                          {
                              Id = b.Id,
                              Title = b.Title,
+                             Content = b.Content,
                              CreationDate = b.CreationDate
                          };
 
@@ -108,6 +109,7 @@ namespace blogpost.Controllers
             var nbp = new BlogPost
             {
                 Title = blogPostNew.Title,
+                Content = blogPostNew.Content,
                 CreationDate = DateTime.Now,
             };
 
@@ -152,6 +154,7 @@ namespace blogpost.Controllers
 
             var bp = _blogPostService.GetBlogPost(blogPostId);
             bp.Title = updatedBlogPost.Title;
+            bp.Content = updatedBlogPost.Content;
 
             var authorId = updatedBlogPost.authorId;
             var categoryId = updatedBlogPost.categoryId;

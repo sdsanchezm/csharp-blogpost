@@ -8,6 +8,8 @@ namespace blogpost.Dto.CreateDto
         [Required]
         public string Title { get; set; }
         [Required]
+        public string Content { get; set; }
+        [Required]
         public int CategoryId { get; set; }
         [Required]
         public int BlogPostAuthorId { get; set; }
