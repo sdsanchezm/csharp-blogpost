@@ -42,6 +42,20 @@ erDiagram
 
 - `dotnet ef migrations add InitialCreate1`
 - `dotnet ef database update`
+- Install the right version
+    - install (go)[https://www.nuget.org/packages/dotnet-ef/7.0.0]
+        - `dotnet tool install --global dotnet-ef --version 7.0.0`
+    - [https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-tool-uninstall]
+        - `dotnet tool uninstall <PACKAGE_NAME> -g|--global`
+
+- Conneiction String Examples:
+    ```
+    "conn1": "Data Source=RYZ\\SQLEXPRESS_SS;Initial Catalog=TestDb;User ID=ss;Password=passw0rd;Trust Server Certificate=True",
+    "conn2": "Data Source=RYZ\\SQLEXPRESS_SS;Initial Catalog=TestDb;Persist Security Info=True;User ID=ss;Password=passw0rd;Encrypt=False;Trust Server Certificate=True"
+    ```
+- Connection String from VS:
+    - SQL Server Object Exp;lorer > Advance > Connection String
+    - Can also "test" the connection
 
 
 
